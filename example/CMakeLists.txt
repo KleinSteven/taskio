@@ -5,5 +5,5 @@ foreach (example ${examples})
     get_filename_component(target_name ${example} NAME_WE)
 
     add_executable(${target_name} ${example})
-    #target_link_libraries(${target_name} PRIVATE taskio)
+    target_link_libraries(${target_name} PRIVATE taskio)
 endforeach ()
