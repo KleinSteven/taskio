@@ -18,6 +18,11 @@ namespace config {
     inline constexpr bool is_warning_level = log_level <= level::warning;
     inline constexpr bool is_err_level = log_level <= level::err;
 
+    using cur_t = uint16_t;
+    inline constexpr cur_t spsc_capacity = 16384;
+
+    inline constexpr size_t cache_line_size = 64;
+
 }
 
 }

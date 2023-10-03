@@ -1,9 +1,9 @@
 #pragma once
 
+#include <cassert>
 #include <concepts>
 #include <coroutine>
 #include <exception>
-#include <cassert>
 
 #include <taskio/concept/awaitable.hpp>
 #include <taskio/concept/future.hpp>
@@ -305,7 +305,6 @@ struct task {
             using awaiter_base::awaiter_base;
 
             decltype(auto) await_resume() {
-                assert(this->handle && "broken_promise");
                 return this->handle.promise().result();
             }
         };
@@ -321,7 +320,6 @@ struct task {
             using awaiter_base::awaiter_base;
 
             decltype(auto) await_resume() {
-                assert(this->handle && "broken_promise");
                 return std::move(this->handle.promise()).result();
             }
         };
@@ -350,6 +348,19 @@ namespace detail {
         return task<T &>{
             std::coroutine_handle<task_promise>::from_promise(*this)};
     }
+
 } // namespace detail
+
+// check
+//static_assert(concepts::Future<task<int>>);
+//static_assert(concepts::Future<task<void>>);
+//
+//static_assert(concepts::Awaitable<
+//              detail::task_final_awaiter<int>,
+//              detail::task_promise<int>>);
+//
+//static_assert(concepts::Awaitable<
+//              detail::task_final_awaiter<void>,
+//              detail::task_promise<void>>);
 
 } // namespace taskio

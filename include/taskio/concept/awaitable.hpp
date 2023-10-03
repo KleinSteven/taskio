@@ -35,11 +35,11 @@ namespace detail {
 } // namespace detail
 
 namespace concepts {
-    template<typename A>
+    template<typename A, typename T = void>
     concept Awaitable = requires {
         typename detail::GetAwaiter_t<A>;
         requires requires(
-            detail::GetAwaiter_t<A> awaiter, std::coroutine_handle<> handle
+            detail::GetAwaiter_t<A> awaiter, std::coroutine_handle<T> handle
         ) {
             { awaiter.await_ready() } -> std::convertible_to<bool>;
             awaiter.await_suspend(handle);

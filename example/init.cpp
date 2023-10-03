@@ -3,17 +3,18 @@
 
 using taskio::log::log;
 
-taskio::task<> task1() {
+taskio::task<int> task1() {
     log("task1 satart\n");
     log("task1 end------------------------------\n");
-    co_return ;
+    co_return 3;
 }
 
 taskio::task<> task2() {
     log("task2 satart\n");
 
-    co_await task1();
+    auto r = co_await task1();
 
+    log("task1 co_return {}\n", r);
     log("task2 resume......\n");
     log("task2 end------------------------------\n");
 }
@@ -31,5 +32,4 @@ int main() {
     log("main start------------------------------\n");
     auto t = task3();
     t.get_handle().resume();
-    return 0;
 }
