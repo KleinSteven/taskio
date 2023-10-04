@@ -4,8 +4,7 @@ project(taskio VERSION 0.1 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 23)
 
-add_library(taskio STATIC
-        lib/taskio/taskio.cpp)
+add_library(taskio STATIC)
 add_library(taskio::taskio ALIAS taskio)
 
 target_include_directories(taskio

@@ -21,7 +21,9 @@ namespace config {
     using cur_t = uint16_t;
     inline constexpr cur_t spsc_capacity = 16384;
 
-    inline constexpr size_t cache_line_size = 64;
+    using ctx_id_t = uint16_t;
+
+    inline constexpr std::size_t cache_line_size = 64;
 
 }
 

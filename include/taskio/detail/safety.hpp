@@ -1,3 +1,3 @@
 #pragma once
 
-enum class safety : bool { unsafe = false, safe = true };
+enum safety : bool { unsafe = false, safe = true };

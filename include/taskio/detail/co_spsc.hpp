@@ -18,6 +18,7 @@ namespace taskio::detail {
  */
 template<
     std::unsigned_integral T = config::cur_t,
+    T capacity = config::spsc_capacity,
     bool is_thread_safe = safety::unsafe>
 struct spsc {
 
@@ -34,14 +35,18 @@ struct spsc {
         return coro;
     }
 
+    inline T task_num() noexcept {
+        return cursor_.size();
+    }
+
   private:
-    template<std::unsigned_integral Type, Type capacity>
+    template<std::unsigned_integral Type, Type capacity_>
     struct cursor {
         using sz_t = Type;
         sz_t m_head = 0;
         sz_t m_tail = 0;
 
-        inline static constexpr sz_t mask = config::spsc_capacity - 1;
+        inline static constexpr sz_t mask = capacity_ - 1;
 
         [[nodiscard]]
         inline sz_t head() const noexcept {
@@ -60,14 +65,14 @@ struct spsc {
 
         [[nodiscard]]
         inline sz_t remain_sz() const noexcept {
-            return capacity - (m_tail - m_head);
+            return capacity_ - (m_tail - m_head);
         }
 
         inline sz_t size() const noexcept { return m_tail - m_head; }
 
         [[nodiscard]]
         inline bool is_available() const noexcept {
-            return bool(capacity - (m_tail - m_head));
+            return bool(capacity_ - (m_tail - m_head));
         }
 
         [[nodiscard]]
@@ -140,8 +145,8 @@ struct spsc {
     using cur_t = config::cur_t;
 
     alignas(config::cache_line_size
-    ) std::array<std::coroutine_handle<>, config::spsc_capacity> reap_queue;
+    ) std::array<std::coroutine_handle<>, capacity> reap_queue;
 
-    cursor<T, config::spsc_capacity> cursor_;
+    cursor<T, capacity> cursor_;
 };
 } // namespace taskio::detail
