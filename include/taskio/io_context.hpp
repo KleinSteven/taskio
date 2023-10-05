@@ -28,6 +28,8 @@ struct io_context {
 
     void start();
 
+    void join();
+
   private:
     void init() noexcept;
 

@@ -42,6 +42,12 @@ void io_context::start() {
     });
 }
 
+void io_context::join() {
+    if (thread.joinable()) {
+        thread.join();
+    }
+}
+
 void io_context::run() {
     while (!stop) [[likely]] {
         get_process();
